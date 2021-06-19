@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Random metro</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<script>
+    var items = [['Комендантский проспект', 'purple'], ['Старая Деревня', 'purple'], ['Крестовский остров', 'purple'], ['Чкаловская', 'purple'], ['Спортивная', 'purple'], ['Адмиралтейская', 'purple'], ['Садовая', 'purple'], ['Звенигородская', 'purple'], ['Обводный канал', 'purple'], ['Волковская', 'purple'], ['Бухарестская', 'purple'], ['Международная', 'purple'], ['Спасская', 'orange'], ['Достоевская', 'orange'], ['Лиговский проспект', 'orange'], ['Площадь Александра Невского', 'orange'], ['Новочеркасская', 'orange'], ['Ладожская', 'orange'], ['Проспект Большевиков', 'orange'], ['Улица Дыбенко', 'orange'], ['Приморская', 'green'], ['Василеостровская', 'green'], ['Гостиный двор', 'green'], ['Маяковская', 'green'], ['Площадь Александра Невского', 'green'], ['Елизаровская', 'green'], ['Ломоносовская', 'green'], ['Пролетарская', 'green'], ['Обухово', 'green'], ['Рыбацкое', 'green'], ['Парнас', 'blue'], ['Проспект Просвещения', 'blue'], ['Озерки', 'blue'], ['Удельная', 'blue'], ['Пионерская', 'blue'], ['Чёрная речка', 'blue'], ['Петроградская', 'blue'], ['Горьковская', 'blue'], ['Невский проспект', 'blue'], ['Сенная площадь', 'blue'], ['Технологический институт', 'blue'], ['Фрунзенская', 'blue'], ['Московские ворота', 'blue'], ['Электросила', 'blue'], ['Парк Победы', 'blue'], ['Московская', 'blue'], ['Звёздная', 'blue'], ['Купчино', 'blue'], ['Девяткино', 'red'], ['Гражданский проспект', 'red'], ['Академическая', 'red'], ['Политехническая', 'red'], ['Площадь Мужества', 'red'], ['Лесная', 'red'], ['Выборгская', 'red'], ['Площадь Ленина', 'red'], ['Чернышевская', 'red'], ['Площадь Восстания', 'red'], ['Владимирская', 'red'], ['Пушкинская', 'red'], ['Технологический институт', 'red'], ['Балтийская', 'red'], ['Нарвская', 'red'], ['Кировский завод', 'red'], ['Автово', 'red'], ['Ленинский проспект', 'red'], ['Проспект Ветеранов', 'red']];
+
+    function good_color(color){
+        switch (color) {
+            case 'red':
+                return 'crimson'
+            case 'orange':
+                return 'coral'
+            case 'green':
+                return 'lightgreen'
+            case 'purple':
+                return 'mediumorchid'
+            case 'blue':
+                return 'royalblue'
+        }
+    }
+
+    function random_metro(){
+        let item = items[Math.floor(Math.random() * items.length)];
+        let color = item[1]
+        document.getElementById('name').innerText = item[0];
+        document.getElementById('general_div').style.setProperty('--bg_color', good_color(color))
+    }
+
+    function random_metro_late(){
+        let random_number = Math.floor(Math.random() * 15);
+        console.log(random_number)
+        let start = Date.now();
+        let timer = setInterval(function() {
+            let timePassed = Date.now() - start;
+            if (timePassed >= 2000) {
+                clearInterval(timer); // закончить анимацию через 2 секунды
+                return;
+            }
+            random_metro()
+        }, 20)
+    }
+</script>
+<body>
+<div id="general_div">
+    <h1 id="name"> Random metro </h1>
+    <button onclick="random_metro_late()"> Click me! </button>
+</div>
+</body>
+<script>
+    random_metro()
+</script>
+</html>
