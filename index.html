@@ -7,7 +7,6 @@
 </head>
 <script>
     var items = [['Комендантский проспект', 'purple'], ['Старая Деревня', 'purple'], ['Крестовский остров', 'purple'], ['Чкаловская', 'purple'], ['Спортивная', 'purple'], ['Адмиралтейская', 'purple'], ['Садовая', 'purple'], ['Звенигородская', 'purple'], ['Обводный канал', 'purple'], ['Волковская', 'purple'], ['Бухарестская', 'purple'], ['Международная', 'purple'], ['Спасская', 'orange'], ['Достоевская', 'orange'], ['Лиговский проспект', 'orange'], ['Площадь Александра Невского', 'orange'], ['Новочеркасская', 'orange'], ['Ладожская', 'orange'], ['Проспект Большевиков', 'orange'], ['Улица Дыбенко', 'orange'], ['Приморская', 'green'], ['Василеостровская', 'green'], ['Гостиный двор', 'green'], ['Маяковская', 'green'], ['Площадь Александра Невского', 'green'], ['Елизаровская', 'green'], ['Ломоносовская', 'green'], ['Пролетарская', 'green'], ['Обухово', 'green'], ['Рыбацкое', 'green'], ['Парнас', 'blue'], ['Проспект Просвещения', 'blue'], ['Озерки', 'blue'], ['Удельная', 'blue'], ['Пионерская', 'blue'], ['Чёрная речка', 'blue'], ['Петроградская', 'blue'], ['Горьковская', 'blue'], ['Невский проспект', 'blue'], ['Сенная площадь', 'blue'], ['Технологический институт', 'blue'], ['Фрунзенская', 'blue'], ['Московские ворота', 'blue'], ['Электросила', 'blue'], ['Парк Победы', 'blue'], ['Московская', 'blue'], ['Звёздная', 'blue'], ['Купчино', 'blue'], ['Девяткино', 'red'], ['Гражданский проспект', 'red'], ['Академическая', 'red'], ['Политехническая', 'red'], ['Площадь Мужества', 'red'], ['Лесная', 'red'], ['Выборгская', 'red'], ['Площадь Ленина', 'red'], ['Чернышевская', 'red'], ['Площадь Восстания', 'red'], ['Владимирская', 'red'], ['Пушкинская', 'red'], ['Технологический институт', 'red'], ['Балтийская', 'red'], ['Нарвская', 'red'], ['Кировский завод', 'red'], ['Автово', 'red'], ['Ленинский проспект', 'red'], ['Проспект Ветеранов', 'red']];
-
     function good_color(color){
         switch (color) {
             case 'red':
@@ -30,18 +29,44 @@
         document.getElementById('general_div').style.setProperty('--bg_color', good_color(color))
     }
 
+    function timing(timeFraction){
+        return 1 - Math.cos(Math.sin(timeFraction));
+    }
+
     function random_metro_late(){
         let random_number = Math.floor(Math.random() * 15);
-        console.log(random_number)
-        let start = Date.now();
-        let timer = setInterval(function() {
-            let timePassed = Date.now() - start;
-            if (timePassed >= 2000) {
-                clearInterval(timer); // закончить анимацию через 2 секунды
-                return;
+        console.log(random_number);
+        let start = performance.now();
+        let duration = 10000;
+        let last_progress = 0;
+        let how = 1;
+        document.getElementById('general_div').style.setProperty('--time', '0.001s')
+        requestAnimationFrame(function animate(time) {
+            // timeFraction изменяется от 0 до 1
+            let timeFraction = (time - start) / duration;
+            if (timeFraction > 1) timeFraction = 1;
+
+            // вычисление текущего состояния анимации
+            let progress = timing(timeFraction);
+
+            console.log(Math.floor(progress * 100), last_progress, how)
+            if (last_progress === Math.floor(progress * 100)) {
+                how++
+                if ((how == 25 && timeFraction < 0.6) || (how == 22 && timeFraction > 0.6)){
+                    how = 1;
+                    random_metro()
+                }
+            } else {
+                how = 1;
+                last_progress = Math.floor(progress * 100)
             }
-            random_metro()
-        }, 20)
+
+            if (timeFraction < 1) {
+                requestAnimationFrame(animate);
+            }
+
+        });
+        document.getElementById('general_div').style.setProperty('--time', '3s')
     }
 </script>
 <body>
